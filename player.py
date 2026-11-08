@@ -11,23 +11,21 @@ class Player:
         self.current_lane = 1
         self.lane_positions = [80, 280, 480]
 
-    def update(self, ground):
+    def update(self, ground_y):
         self.vertical_velocity += self.gravity
         self.rect.y += self.vertical_velocity
-        if self.rect.colliderect(ground) and self.vertical_velocity > 0:
-            self.rect.bottom = ground.top
+        if self.rect.bottom >= ground_y and self.vertical_velocity > 0:
+            self.rect.bottom = ground_y
             self.vertical_velocity = 0
             self.on_ground = True
 
     def move_left(self):
         self.current_lane = max(0, self.current_lane - 1)
         self.rect.x = self.lane_positions[self.current_lane]
-        print("Current lane:", self.current_lane)
 
     def move_right(self):
         self.current_lane = min(self.current_lane + 1, 2)
         self.rect.x = self.lane_positions[self.current_lane]
-        print("Current lane:", self.current_lane)
 
 
 
