@@ -38,12 +38,21 @@ class Obstacle:
 
         return (x, y)
 
-    def draw(self, screen):
+    def get_rect(self):
         width = 10 + self.progress * 80
-        height = 15 + self.progress * 80
+        height = 5 + self.progress * 80
 
         x, y = self.get_position()
 
         rect_x = x - width / 2
         rect_y = y - height / 2
-        pygame.draw.rect(screen, (222, 44, 44), (rect_x, rect_y, width, height))
+
+        return pygame.Rect(rect_x, rect_y, width, height)
+
+    def draw(self, screen):
+        pygame.draw.rect(screen, (222, 44, 44), self.get_rect())
+
+    def is_at_player(self, player_y):
+        player_progress = ((player_y - 150) / 650) ** 0.5
+
+        return abs(self.progress - player_progress) < 0.025

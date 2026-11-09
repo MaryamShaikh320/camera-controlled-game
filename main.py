@@ -2,6 +2,7 @@ import pygame  # noqa: I001
 from player import Player
 from road import Road
 from obstacle import Obstacle
+import random
 
 pygame.init()
 
@@ -17,10 +18,18 @@ clock = pygame.time.Clock()
 player = Player()
 road = Road()
 
-obstacles = [
-    Obstacle(0, road),
-    Obstacle(2, road)
-]
+obstacles = []
+
+SPAWN_INTERVAL = 1000
+last_spawn_time = 0
+
+
+def spawn_obstacles():
+    num_obstacles = random.randint(1, 2)
+
+    for lane in random.sample([0, 1, 2], num_obstacles):
+        obstacles.append(Obstacle(lane, road))
+
 
 running = True
 while running:
@@ -33,14 +42,27 @@ while running:
                 player.move_left()
             elif event.key == pygame.K_RIGHT:
                 player.move_right()
+
+    current_time = pygame.time.get_ticks()
+    if (current_time - last_spawn_time) >= SPAWN_INTERVAL:
+        spawn_obstacles()
+        last_spawn_time = current_time
+
     keys = pygame.key.get_pressed()
     player.jump(keys)
     player.update(GROUND_Y)
     road.update()
+
     for obstacle in obstacles[:]:
         obstacle.update()
+
         if obstacle.progress >= 1:
             obstacles.remove(obstacle)
+        elif obstacle.is_at_player(GROUND_Y) and obstacle.lane == player.current_lane:
+            required_jump_height = GROUND_Y - obstacle.get_rect().top
+
+            if player.jump_height <= required_jump_height:
+                print("GAME OVER")
 
     screen.fill((40, 44, 52))
 
@@ -51,7 +73,7 @@ while running:
     for obstacle in obstacles:
         obstacle.draw(screen)
 
-    pygame.draw.rect(screen, (55, 204, 187), player.rect)
+    player.draw(screen)
 
     pygame.display.flip()
 
