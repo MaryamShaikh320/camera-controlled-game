@@ -9,8 +9,8 @@ You do not need Python or Pygame installed on your computer to play this game. S
 
 1. Go to the **[Releases](https://github.com/MaryamShaikh320/endless-runner)** page on the right side of this repository.
 2. Click on the latest version
-3. Under the **Assets** dropdown at the bottom of the release notes, click on **'EndlessRunner.exe'** (or the 'zip' file) to download it.
-4. Double-click the download file to lauch the game instantly!
+3. Under the **Assets** dropdown at the bottom of the release notes, click on **'main.exe'** to download it.
+4. Double-click the downloaded file to launch the game instantly!
 
 ## Controls
 
